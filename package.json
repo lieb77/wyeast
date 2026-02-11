@@ -3,25 +3,39 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p3200",
     "build": "next build",
-    "start": "next start",
+    "start": "pnpm migrate && next start -p 3200",
+    "migrate": "tsx scripts/migrate.ts",
     "lint": "eslint"
   },
   "dependencies": {
+    "@atproto/api": "^0.18.21",
+    "@atproto/identity": "^0.4.11",
+    "@atproto/jwk-jose": "^0.1.11",
+    "@atproto/oauth-client-node": "^0.3.16",
+    "better-sqlite3": "^12.6.2",
+    "kysely": "^0.28.11",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^20.19.33",
+    "@types/react": "^19.2.13",
+    "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
+    "eslint": "^9.39.2",
     "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "core-js",
+      "esbuild"
+    ]
 }
