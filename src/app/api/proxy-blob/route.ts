@@ -12,7 +12,11 @@ export async function GET(req: NextRequest) {
 		
   try {
    	const session = await getSession()
-	const agent = new Agent(session);
+   	if (!session) {
+      	const loginUrl = new URL('/', req.url); 
+      	return NextResponse.redirect(loginUrl);
+    }
+	const agent = new Agent(session)
     
     // Try to fetch the blob
    	// const blobResponse = await agent.api.com.atproto.repo.getBlob({ 
@@ -31,6 +35,8 @@ export async function GET(req: NextRequest) {
       headers: {
         'Content-Type': 'image/jpeg',
         'Cache-Control': 'public, max-age=31536000, immutable',
+        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Content-Disposition': 'inline',
       },
     });
   } catch (error: any) {

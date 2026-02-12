@@ -3,15 +3,18 @@ import { getSession } from "@/lib/auth/session";
 import { Agent  } from "@atproto/api";
 import { Posts } from "@/components/Posts";
 import { formatDate } from "@/lib/utils"
+import { redirect } from 'next/navigation';
 
-export default async function Page() {
+export default async function PostsPage() {
 	const session = await getSession()
+    if (!session) redirect('/')
+
 	const agent = new Agent(session);
 	
  	const { data } = await agent.getAuthorFeed({
 		actor: agent.did,
 		filter: 'posts_and_author_threads',
-		limit: 25,
+		limit: 4,
 	});
 	const { feed: feed, cursor: nextPage } = data
 	const myfeed = []
@@ -29,7 +32,7 @@ export default async function Page() {
 		
 			if('images' in record.embed ){	
 				const alt = record.embed.images[0].alt
-				const cid = record.embed.images[0].image.ref
+				const cid = record.embed.images[0].image.ref.toString()
 				const url = `/api/proxy-blob?did=${did}&cid=${cid}`;		
 				myfeed.push({
 					'cid': cid,
@@ -46,7 +49,7 @@ export default async function Page() {
 	return (
 		<main className="flex flex-col items-center justify-center min-h-screen p-4">
 			{data  &&  (
-				<Posts posts={myfeed} />
+				<Posts initialPosts={myfeed} initialCursor={nextPage} />
 			)}
 		</main>	
 	)

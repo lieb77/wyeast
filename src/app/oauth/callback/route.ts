@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     // Exchange code for session
     const { session } = await client.callback(params);
 
-    const response = NextResponse.redirect(new URL("/profile", PUBLIC_URL));
+    const response = NextResponse.redirect(new URL("/gallery", PUBLIC_URL));
 
     // Set DID cookie
     response.cookies.set("did", session.did, {
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7, // 1 week
-      path: "/profile",
+      path: "/",
     });
 
     return response;

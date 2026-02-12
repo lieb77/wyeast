@@ -3,13 +3,13 @@ import {
   Keyset,
   NodeOAuthClient,
   buildAtprotoLoopbackClientMetadata,
-} from "@atproto/oauth-client-node";
+} from "@atproto/oauth-client-node"
 import type {
   NodeSavedSession,
   NodeSavedState,
   OAuthClientMetadataInput,
-} from "@atproto/oauth-client-node";
-import { getDb } from "../db";
+} from "@atproto/oauth-client-node"
+import { getDb } from "../db"
 
 export const SCOPE = "atproto transition:generic";
 
@@ -109,7 +109,15 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
         await db.deleteFrom("auth_session").where("key", "=", key).execute();
       },
     },
-  });
+    
+	requestLock: async (key, fn) => {
+		try {
+		  return await fn();
+		} catch (e) {
+		  throw e;
+		}
+	  },
+  })
 
   return client;
 }
